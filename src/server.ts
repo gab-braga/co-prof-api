@@ -1,11 +1,13 @@
 import 'dotenv/config';
-import { createUser } from './firebase/auth';
 
-(async () => {
-  const user = await createUser({
-    name: 'Gabriel',
-    email: 'gabriel@email.com',
-    password: '123456',
-  });
-  console.log(user);
-})();
+import express from 'express';
+import routerRecording from './routes/recording';
+import cors from 'cors';
+
+const server = express();
+
+server.use(cors());
+
+server.use(routerRecording);
+
+server.listen(3000, () => {});

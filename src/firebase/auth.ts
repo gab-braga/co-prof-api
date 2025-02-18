@@ -13,4 +13,9 @@ async function createUser({ name, email, password }: User) {
   return userRecord;
 }
 
-export { createUser };
+async function verifyToken(token: string) {
+  const decoded = await auth.verifyIdToken(token);
+  return decoded;
+}
+
+export { createUser, verifyToken };
