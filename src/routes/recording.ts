@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import { verifyToken } from '../firebase/auth';
 
-const routerRecording = Router();
-routerRecording.post('/recording', async (req, res) => {
+const recordingRouter = Router();
+
+recordingRouter.post('/recording', async (req, res) => {
   try {
     const { authorization } = req.headers;
     if (authorization) {
@@ -14,4 +15,4 @@ routerRecording.post('/recording', async (req, res) => {
   }
 });
 
-export default routerRecording;
+export default recordingRouter;
