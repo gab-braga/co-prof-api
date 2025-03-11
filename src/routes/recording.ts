@@ -1,17 +1,13 @@
 import { Router } from 'express';
-import { verifyToken } from '../firebase/auth';
+import checkAuthToken from '../middlewares/checkAuthToken';
 
 const recordingRouter = Router();
 
-recordingRouter.post('/recording', async (req, res) => {
+recordingRouter.post('/recording', checkAuthToken, async (req, res) => {
   try {
-    const { authorization } = req.headers;
-    if (authorization) {
-      const user = await verifyToken(authorization);
-      res.status(200).json({ user });
-    } else throw new Error('Token ausente');
+    res.status(200).json({ message: 'Liberado!!!' });
   } catch (error) {
-    res.status(500).json({ message: 'Error' });
+    return res.status(500).json({ message: 'Error' });
   }
 });
 

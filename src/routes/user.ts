@@ -13,6 +13,7 @@ userRouter.post('/users', async (req, res) => {
           'Algumas informações estão faltando. Verifique e tente novamente.',
       });
     }
+
     const user = await createUser({ name, email, password });
     return res.status(201).json({
       message: 'Cadastro concluído!',
@@ -20,7 +21,9 @@ userRouter.post('/users', async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Error' });
+    return res.status(500).json({
+      message: 'Erro interno no servidor. Tente novamente mais tarde',
+    });
   }
 });
 

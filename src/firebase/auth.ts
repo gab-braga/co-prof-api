@@ -1,4 +1,4 @@
-import { getAuth } from 'firebase-admin/auth';
+import { DecodedIdToken, getAuth } from 'firebase-admin/auth';
 import app from './app';
 import User from '../interfaces/User';
 
@@ -14,7 +14,12 @@ async function createUser({ name, email, password }: User) {
 }
 
 async function verifyToken(token: string) {
-  const decoded = await auth.verifyIdToken(token);
+  let decoded: DecodedIdToken | null = null;
+  try {
+    decoded = await auth.verifyIdToken(token);
+  } catch (error) {
+    console.error(error);
+  }
   return decoded;
 }
 
