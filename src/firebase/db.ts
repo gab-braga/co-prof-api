@@ -12,6 +12,7 @@ async function save(local: string, data: any) {
 async function findAll(local: string) {
   const collectionRef = db.collection(local);
   const snapshot = await collectionRef.get();
+  
   const data: any[] = [];
   snapshot.forEach((doc) => {
     data.push({ ...doc.data(), id: doc.id });
@@ -25,4 +26,15 @@ async function findById(local: string, id: string) {
   return doc;
 }
 
-export { save, findAll, findById };
+async function findByUserId(local: string, userId: string) {
+  const collectionRef = db.collection(local);
+  const snapshot = await collectionRef.where("userId", "==", userId).get();
+
+  const data: any[] = [];
+  snapshot.forEach((doc) => {
+    data.push({ ...doc.data(), id: doc.id });
+  });
+  return data;
+} 
+
+export { save, findAll, findById, findByUserId };
