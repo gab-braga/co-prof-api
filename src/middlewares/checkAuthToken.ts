@@ -24,13 +24,13 @@ export default async function checkAuthToken(
     }
 
     const user = await verifyToken(authorization);
+
     if (!user) {
       return res
         .status(403)
         .json({ message: 'Acesso negado: token inválido.' });
     }
 
-    console.log(user);
     req.user = user;
     next();
   } catch (error) {

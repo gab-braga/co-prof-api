@@ -8,4 +8,6 @@ export default interface User {
   displayName?: string;
   photoURL?: string;
   disabled?: boolean;
+  picture?: string;
+  email_verified?: boolean;
 }
