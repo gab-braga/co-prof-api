@@ -16,6 +16,11 @@ async function update(local: string, id: string, data: any): Promise<any> {
   return { ...doc.data(), id: doc.id };
 }
 
+async function remove(local: string, id: string): Promise<any> {
+  const docRef = db.collection(local).doc(id);
+  await docRef.delete();
+}
+
 async function findById(local: string, id: string): Promise<any> {
   const docRef = db.collection(local).doc(id);
   const doc = await docRef.get();
@@ -25,7 +30,7 @@ async function findById(local: string, id: string): Promise<any> {
 async function findAll(local: string): Promise<any> {
   const collectionRef = db.collection(local);
   const snapshot = await collectionRef.get();
-  
+
   const data: any[] = [];
   snapshot.forEach((doc) => {
     data.push({ ...doc.data(), id: doc.id });
@@ -35,13 +40,13 @@ async function findAll(local: string): Promise<any> {
 
 async function findByUserId(local: string, userId: string): Promise<any> {
   const collectionRef = db.collection(local);
-  const snapshot = await collectionRef.where("userId", "==", userId).get();
+  const snapshot = await collectionRef.where('userId', '==', userId).get();
 
   const data: any[] = [];
   snapshot.forEach((doc) => {
     data.push({ ...doc.data(), id: doc.id });
   });
   return data;
-} 
+}
 
-export { save, update, findAll, findById, findByUserId };
+export { save, update, remove, findAll, findById, findByUserId };
