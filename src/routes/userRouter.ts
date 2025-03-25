@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser } from '../firebase/auth';
+import { createUser, updateUser } from '../firebase/auth';
 import User from '../interfaces/User';
 import checkAuthToken from '../middlewares/checkAuthToken';
 
@@ -24,6 +24,31 @@ userRouter.post('/users', async (req, res) => {
     console.error(error);
     return res.status(500).json({
       message: 'Erro interno no servidor. Tente novamente mais tarde',
+    });
+  }
+});
+
+userRouter.put('/users', checkAuthToken, async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (!user) {
+      return res.status(401).json({
+        message: 'Você precisa estar logado para acessar este recurso.',
+      });
+    }
+
+    const userId = user.uid as string;
+    const { name, email } = req.body;
+    const data = { name, email };
+    const result = await updateUser(userId, data);
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: 'Error interno no servidor. Tente novamente mais tarde.',
     });
   }
 });

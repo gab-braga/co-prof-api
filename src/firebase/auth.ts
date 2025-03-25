@@ -13,6 +13,14 @@ async function createUser({ name, email, password }: User) {
   return userRecord;
 }
 
+async function updateUser(uid: string, { name, email }: User) {
+  const userRecord = await auth.updateUser(uid, {
+    email,
+    displayName: name,
+  });
+  return userRecord;
+}
+
 async function verifyToken(token: string) {
   let decoded: DecodedIdToken | null = null;
   try {
@@ -23,4 +31,4 @@ async function verifyToken(token: string) {
   return decoded;
 }
 
-export { createUser, verifyToken };
+export { createUser, updateUser, verifyToken };
