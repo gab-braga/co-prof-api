@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser, updateUser } from '../firebase/auth';
+import { createUser, updateUser, updateUserPassword } from '../firebase/auth';
 import User from '../interfaces/User';
 import checkAuthToken from '../middlewares/checkAuthToken';
 
@@ -42,6 +42,36 @@ userRouter.put('/users', checkAuthToken, async (req, res) => {
     const { name, email } = req.body;
     const data = { name, email };
     const result = await updateUser(userId, data);
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: 'Error interno no servidor. Tente novamente mais tarde.',
+    });
+  }
+});
+
+userRouter.put('/users/password', checkAuthToken, async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (!user) {
+      return res.status(401).json({
+        message: 'Você precisa estar logado para acessar este recurso.',
+      });
+    }
+
+    const { newPassword, confirmPassword } = req.body;
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        message: 'As senhas não coincidem. Verifique e tente novamente.',
+      });
+    }
+
+    const userId = user.uid as string;
+    const result = await updateUserPassword(userId, newPassword);
 
     return res.status(200).json(result);
   } catch (error) {
