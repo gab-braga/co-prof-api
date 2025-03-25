@@ -26,6 +26,10 @@ async function updateUserPassword(uid: string, password: string) {
   return userRecord;
 }
 
+async function deleteUser(uid: string) {
+  await auth.deleteUser(uid);
+}
+
 async function verifyToken(token: string) {
   let decoded: DecodedIdToken | null = null;
   try {
@@ -36,4 +40,4 @@ async function verifyToken(token: string) {
   return decoded;
 }
 
-export { createUser, updateUser, updateUserPassword, verifyToken };
+export { createUser, updateUser, updateUserPassword, deleteUser, verifyToken };
