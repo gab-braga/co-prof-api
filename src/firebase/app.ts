@@ -9,6 +9,7 @@ const serviceAccount: ServiceAccount = {
 
 const app = initializeApp({
   credential: admin.credential.cert(serviceAccount),
+  storageBucket: process.env.FB_STORAGE_BUCKET,
 });
 
 export default app;
