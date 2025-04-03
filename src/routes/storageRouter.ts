@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
+import checkAuthToken from '../middlewares/checkAuthToken';
 import { uploadFile } from '../firebase/storage';
 
 const storageRouter = Router();
@@ -7,16 +8,26 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 storageRouter.post(
   '/storage/upload',
+  checkAuthToken,
   upload.single('file'),
   async (req, res) => {
     try {
+      const user = req.user;
+
+      if (!user) {
+        return res.status(401).json({
+          message: 'Você precisa estar logado para acessar este recurso.'
+        });
+      }
+
       const file = req.file;
 
       if (!file) {
         return res.status(400).json({ message: 'Nenhum arquivo enviado.' });
       }
 
-      const urlFile = await uploadFile(file);
+      const userId = user.uid as string;
+      const urlFile = await uploadFile(file, userId);
 
       return res.status(200).json({ urlFile });
     } catch (error) {
