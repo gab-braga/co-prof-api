@@ -16,7 +16,7 @@ storageRouter.post(
 
       if (!user) {
         return res.status(401).json({
-          message: 'Você precisa estar logado para acessar este recurso.'
+          message: 'Você precisa estar logado para acessar este recurso.',
         });
       }
 
@@ -27,9 +27,9 @@ storageRouter.post(
       }
 
       const userId = user.uid as string;
-      const urlFile = await uploadFile(file, userId);
+      const fileUrl = await uploadFile(file, userId);
 
-      return res.status(200).json({ urlFile });
+      return res.status(200).json({ fileUrl });
     } catch (error) {
       console.error(error);
 

@@ -104,9 +104,9 @@ classRouter.put('/classes/:id', checkAuthToken, async (req, res) => {
     const result = await findById('classes', id);
 
     if (!result) {
-      return res
-        .status(404)
-        .json({ message: 'Este recurso não foi encontrado.' });
+      return res.status(404).json({
+        message: 'Este recurso não foi encontrado.',
+      });
     }
 
     const userId = user.uid as string;
@@ -151,9 +151,9 @@ classRouter.delete('/classes/:id', checkAuthToken, async (req, res) => {
     const result = await findById('classes', id);
 
     if (!result) {
-      return res
-        .status(404)
-        .json({ message: 'Este recurso não foi encontrado.' });
+      return res.status(404).json({
+        message: 'Este recurso não foi encontrado.',
+      });
     }
 
     const userId = user.uid as string;

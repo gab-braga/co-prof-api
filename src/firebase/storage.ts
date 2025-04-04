@@ -12,7 +12,7 @@ async function uploadFile(file: Express.Multer.File, path: string) {
     metadata: { contentType: file.mimetype },
   });
 
-  const urlFile = await new Promise<string>((resolve, reject) => {
+  const fileUrl = await new Promise<string>((resolve, reject) => {
     stream.on('error', (error) => {
       console.error(error);
       reject('Falha no envio do arquivo. Tente novamente mais tarde.');
@@ -20,14 +20,14 @@ async function uploadFile(file: Express.Multer.File, path: string) {
 
     stream.on('finish', async () => {
       await fileUpload.makePublic();
-      const urlFile = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
-      resolve(urlFile);
+      const fileUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+      resolve(fileUrl);
     });
 
     stream.end(file.buffer);
   });
 
-  return urlFile;
+  return fileUrl;
 }
 
 export { uploadFile };
