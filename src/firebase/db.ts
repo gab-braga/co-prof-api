@@ -1,5 +1,6 @@
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, Query } from 'firebase-admin/firestore';
 import app from './app';
+import Filter from '../interfaces/Filter';
 
 const db = getFirestore(app);
 
@@ -49,4 +50,21 @@ async function findByUserId(local: string, userId: string): Promise<any> {
   return data;
 }
 
-export { save, update, remove, findAll, findById, findByUserId };
+async function findWithFilters(local: string, filters: Filter[]): Promise<any> {
+  const collectionRef = db.collection(local);
+  let query: Query = collectionRef;
+  
+  for (const { field, value } of filters) {
+    query = query.where(field, "==", value);
+  }
+
+  const snapshot = await query.get();
+
+  const data: any[] = [];
+  snapshot.forEach((doc) => {
+    data.push({ ...doc.data(), id: doc.id });
+  });
+  return data;
+}
+
+export { save, update, remove, findAll, findById, findByUserId, findWithFilters };
