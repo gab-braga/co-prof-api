@@ -1,6 +1,7 @@
 import { getFirestore, Query } from 'firebase-admin/firestore';
 import app from './app';
 import Filter from '../interfaces/Filter';
+import Sort from '../interfaces/Sort';
 
 const db = getFirestore(app);
 
@@ -50,12 +51,17 @@ async function findByUserId(local: string, userId: string): Promise<any> {
   return data;
 }
 
-async function findWithFilters(local: string, filters: Filter[]): Promise<any> {
+async function findWithFilters(local: string, filters: Filter[], sort: Sort | null = null): Promise<any> {
   const collectionRef = db.collection(local);
   let query: Query = collectionRef;
   
   for (const { field, value } of filters) {
     query = query.where(field, "==", value);
+  }
+
+  if (sort) {
+    const { field, direction } = sort;
+    query = query.orderBy(field, direction);
   }
 
   const snapshot = await query.get();
