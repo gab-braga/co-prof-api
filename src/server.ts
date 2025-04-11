@@ -18,4 +18,4 @@ server.use(classRouter);
 server.use(storageRouter);
 server.use(recordingRouter);
 
-server.listen(3000, () => {});
+export default server;
