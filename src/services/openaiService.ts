@@ -23,6 +23,10 @@ async function transcribeAudio(audioLink: string) {
     },
   );
 
+  if (!response.ok) {
+    throw new Error(`Erro HTTP: ${response.status}`);
+  }
+
   return await response.json();
 }
 
