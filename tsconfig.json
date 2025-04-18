@@ -6,6 +6,5 @@
     "rootDir": "src",
     "esModuleInterop": true,
     "strict": true
-  },
-  "exclude": ["src/dev.ts"]
+  }
 }
