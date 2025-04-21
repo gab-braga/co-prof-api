@@ -5,8 +5,7 @@ export default function checkHealth(
   res: Response,
   next: NextFunction
 ) {
-  res.status(200).json({
-    status: "healthy",
-    timestamp: new Date().toISOString(),
-  });
+  const timestamp = new Date().toISOString();
+
+  res.status(200).json({ status: "healthy", timestamp });
 }

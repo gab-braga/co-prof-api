@@ -1,11 +1,9 @@
 import { initializeApp, ServiceAccount } from 'firebase-admin/app';
 import admin from 'firebase-admin';
 
-const serviceAccount: ServiceAccount = {
-  projectId: process.env.FB_PROJECT_ID,
-  privateKey: process.env.FB_PRIVATE_KEY,
-  clientEmail: process.env.FB_CLIENT_EMAIL,
-};
+const credentialsBase64 = process.env.FB_SERVICE_ACCOUNT_BASE64 as string;
+const credentialsDecoded = Buffer.from(credentialsBase64, "base64").toString("utf-8");
+const serviceAccount = JSON.parse(credentialsDecoded);
 
 const app = initializeApp({
   credential: admin.credential.cert(serviceAccount),
