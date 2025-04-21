@@ -7,6 +7,7 @@ import userRouter from '../routes/userRouter';
 import classRouter from '../routes/classRouter';
 import storageRouter from '../routes/storageRouter';
 import recordingRouter from '../routes/recordingRouter';
+import speechRouter from '../routes/speechRouter';
 import welcome from '../middlewares/welcome';
 import checkHealth from '../middlewares/checkHealth';
 import notFound from '../middlewares/notFound';
@@ -24,6 +25,7 @@ app.use(userRouter);
 app.use(classRouter);
 app.use(storageRouter);
 app.use(recordingRouter);
+app.use(speechRouter);
 
 app.use(notFound);
 

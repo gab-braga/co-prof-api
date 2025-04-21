@@ -1,7 +1,7 @@
 const apiKey = process.env.OPENAI_API_KEY;
 
-async function transcribeAudio(audioLink: string) {
-  const audioResponse = await fetch(audioLink);
+async function transcribeAudio(audioURL: string) {
+  const audioResponse = await fetch(audioURL);
   const audioBuffer = await audioResponse.arrayBuffer();
   const audio = new Blob([audioBuffer], { type: 'audio/mp3' });
 
