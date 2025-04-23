@@ -16,14 +16,23 @@ recordingRouter.post("/recordings", checkAuthToken, async (req, res) => {
       });
     }
 
-    const { classId, transcription, recordingStartTime, recordingStopTime } =
+    const {
+      classId,
+      transcription,
+      recordingStartTime,
+      recordingStopTime,
+      segmentedRecordingURLs,
+      recordingURL,
+    } =
       req.body;
 
     if (
       !classId ||
       !transcription ||
       !recordingStartTime ||
-      !recordingStopTime
+      !recordingStopTime ||
+      !segmentedRecordingURLs ||
+      !recordingURL
     ) {
       return res.status(400).json({
         message:
@@ -54,6 +63,8 @@ recordingRouter.post("/recordings", checkAuthToken, async (req, res) => {
       transcription,
       recordingStartTime,
       recordingStopTime,
+      segmentedRecordingURLs,
+      recordingURL,
       createdAt,
     };
 
