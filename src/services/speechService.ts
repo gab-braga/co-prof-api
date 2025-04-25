@@ -31,6 +31,9 @@ async function transcribeAudio(audioURL: string) {
 }
 
 async function reduceTranscription(transcription: string) {
+  if (transcription.length <= 1000)
+    return transcription;
+
   const url = "https://api.openai.com/v1/chat/completions";
   const model = "gpt-3.5-turbo";
   const systemPrompt = "Você é um assistente acadêmico. Resuma esta parte da aula em 1000 palavras, mantendo conceitos-chave e exemplos.";

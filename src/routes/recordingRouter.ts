@@ -23,6 +23,7 @@ recordingRouter.post("/recordings", checkAuthToken, async (req, res) => {
       recordingStopTime,
       segmentedRecordingURLs,
       recordingURL,
+      summaryData
     } =
       req.body;
 
@@ -32,7 +33,8 @@ recordingRouter.post("/recordings", checkAuthToken, async (req, res) => {
       !recordingStartTime ||
       !recordingStopTime ||
       !segmentedRecordingURLs ||
-      !recordingURL
+      !recordingURL ||
+      !summaryData
     ) {
       return res.status(400).json({
         message:
@@ -65,6 +67,7 @@ recordingRouter.post("/recordings", checkAuthToken, async (req, res) => {
       recordingStopTime,
       segmentedRecordingURLs,
       recordingURL,
+      summaryData,
       createdAt,
     };
 
