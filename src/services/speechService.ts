@@ -30,9 +30,9 @@ async function transcribeAudio(audioURL: string) {
   return await response.json();
 }
 
-async function reduceTranscription(transcription: string) {
-  if (transcription.length <= 1000)
-    return transcription;
+async function reduceTranscript(transcript: string) {
+  if (transcript.length <= 1000)
+    return transcript;
 
   const url = "https://api.openai.com/v1/chat/completions";
   const model = "gpt-3.5-turbo";
@@ -45,7 +45,7 @@ async function reduceTranscription(transcription: string) {
   
   const messages = [
     { role: "system", content: systemPrompt },
-    { role: "user", content: transcription }
+    { role: "user", content: transcript }
   ];
   
   const jsonBody = JSON.stringify({
@@ -72,7 +72,7 @@ async function reduceTranscription(transcription: string) {
   }
 }
 
-async function generateTranscriptSummary(transcription: string) {
+async function summarizeTranscript(transcript: string) {
   const url = "https://api.openai.com/v1/chat/completions";
   const model = "gpt-4o-mini";
   const systemPrompt = "Você é um assistente acadêmico. Resuma esta transcrição de aula. Mantenha precisão acadêmica e use HTML para ênfase quando necessário.";
@@ -84,7 +84,7 @@ async function generateTranscriptSummary(transcription: string) {
   
   const messages = [
     { role: "system", content: systemPrompt },
-    { role: "user", content: transcription }
+    { role: "user", content: transcript }
   ];
 
   const jsonSchema = {
@@ -136,26 +136,24 @@ async function generateTranscriptSummary(transcription: string) {
     },
   });
 
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers,
-      body: jsonBody
-    });
+  const response = await fetch(url, {
+    method: "POST",
+    headers,
+    body: jsonBody
+  });
 
-    const jsonResponse = await response.json();
-    const text = jsonResponse.choices[0].message.content as string;
-    const json = JSON.parse(text);
+  if (!response.ok) 
+    throw new Error(`OpenAI responded with error: ${response.statusText}`);
 
-    return json;
-  } catch (error) {
-    console.error(error);
-    throw new Error(`Erro ao processar resumo: ${error}`);
-  }
+  const jsonResponse = await response.json();
+  const text = jsonResponse.choices[0].message.content as string;
+  const json = JSON.parse(text);
+
+  return json;
 }
 
 export {
   transcribeAudio,
-  reduceTranscription,
-  generateTranscriptSummary
+  reduceTranscript,
+  summarizeTranscript
 };

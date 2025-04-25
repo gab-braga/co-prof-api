@@ -18,22 +18,20 @@ recordingRouter.post("/recordings", checkAuthToken, async (req, res) => {
 
     const {
       classId,
-      transcription,
       recordingStartTime,
       recordingStopTime,
-      segmentedRecordingURLs,
-      recordingURL,
+      transcript,
+      uploadData,
       summaryData
     } =
       req.body;
 
     if (
       !classId ||
-      !transcription ||
       !recordingStartTime ||
       !recordingStopTime ||
-      !segmentedRecordingURLs ||
-      !recordingURL ||
+      !transcript ||
+      !uploadData||
       !summaryData
     ) {
       return res.status(400).json({
@@ -62,11 +60,10 @@ recordingRouter.post("/recordings", checkAuthToken, async (req, res) => {
     const data = {
       userId,
       classId,
-      transcription,
       recordingStartTime,
       recordingStopTime,
-      segmentedRecordingURLs,
-      recordingURL,
+      transcript,
+      uploadData,
       summaryData,
       createdAt,
     };

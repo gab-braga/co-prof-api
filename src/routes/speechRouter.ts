@@ -2,8 +2,8 @@ import { Router } from "express";
 import checkAuthToken from "../middlewares/checkAuthToken";
 import {
   transcribeAudio,
-  generateTranscriptSummary,
-  reduceTranscription
+  summarizeTranscript,
+  reduceTranscript
 } from "../services/speechService";
 
 const speechRouter = Router();
@@ -27,9 +27,9 @@ speechRouter.post("/speech/transcribe", checkAuthToken, async (req, res) => {
       });
     }
 
-    const transcription = await transcribeAudio(audioURL);
+    const transcriptData = await transcribeAudio(audioURL);
 
-    return res.status(200).json({ transcription });
+    return res.status(200).json(transcriptData);
   } catch (error) {
     console.error(error);
 
@@ -49,18 +49,18 @@ speechRouter.post("/speech/reduce", checkAuthToken, async (req, res) => {
       });
     }
 
-    const { transcription } = req.body;
+    const { transcript } = req.body;
 
-    if (!transcription) {
+    if (!transcript) {
       return res.status(404).json({
         message:
           "Algumas informações estão faltando. Verifique e tente novamente.",
       });
     }
 
-    const reducedTranscription = await reduceTranscription(transcription);
+    const reducedTranscript = await reduceTranscript(transcript);
 
-    return res.status(200).json({ text: reducedTranscription });
+    return res.status(200).json({ text: reducedTranscript });
   } catch (error) {
     console.error(error);
 
@@ -80,18 +80,18 @@ speechRouter.post("/speech/summary", checkAuthToken, async (req, res) => {
       });
     }
 
-    const { transcription } = req.body;
+    const { transcript } = req.body;
 
-    if (!transcription) {
+    if (!transcript) {
       return res.status(404).json({
         message:
           "Algumas informações estão faltando. Verifique e tente novamente.",
       });
     }
 
-    const summary = await generateTranscriptSummary(transcription);
+    const summaryData = await summarizeTranscript(transcript);
 
-    return res.status(200).json(summary);
+    return res.status(200).json(summaryData);
   } catch (error) {
     console.error(error);
 
