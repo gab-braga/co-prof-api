@@ -24,7 +24,8 @@ async function transcribeAudio(audioURL: string) {
   );
 
   if (!response.ok) {
-    throw new Error(`Erro HTTP: ${response.status}`);
+    const bodyText = await response.text();
+    throw new Error(`HTTP Status: ${response.status}.\nHTTP Body: ${bodyText}`);
   }
 
   return await response.json();
@@ -61,6 +62,11 @@ async function reduceTranscript(transcript: string) {
       headers,
       body: jsonBody,
     });
+
+    if (!response.ok) {
+      const bodyText = await response.text();
+      throw new Error(`HTTP Status: ${response.status}.\nHTTP Body: ${bodyText}`);
+    }
 
     const jsonResponse = await response.json();
     const text = jsonResponse.choices[0].message.content as string;
@@ -142,8 +148,10 @@ async function summarizeTranscript(transcript: string) {
     body: jsonBody
   });
 
-  if (!response.ok) 
-    throw new Error(`OpenAI responded with error: ${response.statusText}`);
+  if (!response.ok) {
+    const bodyText = await response.text();
+    throw new Error(`HTTP Status: ${response.status}.\nHTTP Body: ${bodyText}`);
+  }
 
   const jsonResponse = await response.json();
   const text = jsonResponse.choices[0].message.content as string;
