@@ -1,11 +1,13 @@
 import { getStorage } from 'firebase-admin/storage';
 import app from './app';
+import { v4 as uuidv4 } from "uuid";
 
 const storage = getStorage(app);
 
 async function uploadFile(file: Express.Multer.File, path: string) {
+  const uuid = uuidv4();
   const bucket = storage.bucket();
-  const fileName = `${path}/${Date.now()}`;
+  const fileName = `${path}/${uuid}`;
   const fileUpload = bucket.file(fileName);
 
   const stream = fileUpload.createWriteStream({
