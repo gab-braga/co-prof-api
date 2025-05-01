@@ -2,7 +2,7 @@ import { Router } from "express";
 import Sort from "../interfaces/Sort";
 import Filter from "../interfaces/Filter";
 import checkAuthToken from "../middlewares/checkAuthToken";
-import { findById, findWithFilters, save } from "../firebase/db";
+import { findById, findWithFilters, remove, save } from "../firebase/db";
 
 const recordingRouter = Router();
 
@@ -119,6 +119,46 @@ recordingRouter.get(
       const recordings = await findWithFilters("recordings", filters, sort);
 
       return res.status(200).json(recordings);
+    } catch (error) {
+      console.error(error);
+
+      return res.status(500).json({
+        message: "Error interno no servidor. Tente novamente mais tarde.",
+      });
+    }
+  }
+);
+
+recordingRouter.delete("/recordings/:id", checkAuthToken, async (req, res) => {
+    try {
+      const user = req.user;
+
+      if (!user) {
+        return res.status(401).json({
+          message: "Você precisa estar logado para acessar este recurso.",
+        });
+      }
+
+      const recordingId = req.params.id;
+      const recording = await findById("recordings", recordingId);
+
+      if (!recording) {
+        return res.status(404).json({
+          message: "Este recurso não foi encontrado.",
+        });
+      }
+
+      const userId = user.uid as string;
+
+      if (recording.userId !== userId) {
+        return res.status(401).json({
+          message: "Você não tem autorização para acessar este recurso.",
+        });
+      }
+
+      await remove("recordings", recordingId);
+
+      return res.status(200).json({ message: "Este recurso foi removido." });
     } catch (error) {
       console.error(error);
 

@@ -81,7 +81,7 @@ async function reduceTranscript(transcript: string) {
 async function summarizeTranscript(transcript: string) {
   const url = "https://api.openai.com/v1/chat/completions";
   const model = "gpt-4o-mini";
-  const systemPrompt = "Você é um assistente acadêmico. Resuma esta transcrição de aula. Mantenha precisão acadêmica e use HTML para ênfase quando necessário.";
+  const systemPrompt = "Você é um assistente acadêmico. Resuma esta transcrição de aula. Mantenha precisão acadêmica.";
   
   const headers = {
     "Content-Type": "application/json",
@@ -100,14 +100,14 @@ async function summarizeTranscript(transcript: string) {
       properties: {
         summary: {
           type: 'string',
-          description: 'Resumo conciso em 1000 palavras',
+          description: 'Resumo conciso em 800 palavras. Use HTML para ênfase quando necessário.',
         },
         actionItems: {
           type: 'array',
           description: 'Lista de acontecimentos relevantes que ocorreram ao longo da aula',
           items: {
             type: 'string',
-            description: 'Descrição do acontecimento relevante em até 20 palavras',
+            description: 'Descrição do acontecimento relevante em até 10 palavras',
           },
         },
         keyConcepts: {
