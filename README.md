@@ -1,0 +1,21 @@
+# CoProf API
+
+* ```/``` GET
+* ```/health``` GET
+* ```/classes``` GET
+* ```/classes``` POST
+* ```/classes/:id``` GET
+* ```/classes/:id``` PUT
+* ```/classes/:id``` DELETE
+* ```/recordings``` POST
+* ```/recordings/classes/:id``` GET
+* ```/recordings/:id``` DELETE
+* ```/speech/transcribe``` POST
+* ```/speech/reduce``` POST
+* ```/speech/summary``` POST
+* ```/storage/upload``` POST
+* ```/users``` POST
+* ```/users``` PUT
+* ```/users``` DELETE
+* ```/users/me``` GET
+* ```/users/password``` PUT
