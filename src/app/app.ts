@@ -11,6 +11,7 @@ import speechRouter from '../routes/speechRouter';
 import welcome from '../middlewares/welcome';
 import checkHealth from '../middlewares/checkHealth';
 import notFound from '../middlewares/notFound';
+import googleRouter from '../routes/googleRouter';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(classRouter);
 app.use(storageRouter);
 app.use(recordingRouter);
 app.use(speechRouter);
+app.use(googleRouter);
 
 app.use(notFound);
 
