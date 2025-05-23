@@ -6,7 +6,7 @@ const googleRouter = Router();
 
 googleRouter.post("/google/auth", checkAuthToken, async (req, res) => {
   try {
-    const { code } = req.params;
+    const { code } = req.body;
 
     if (!code) {
       return res

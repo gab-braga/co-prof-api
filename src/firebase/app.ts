@@ -1,4 +1,4 @@
-import { initializeApp, ServiceAccount } from 'firebase-admin/app';
+import { initializeApp } from 'firebase-admin/app';
 import admin from 'firebase-admin';
 
 const credentialsBase64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64 as string;
